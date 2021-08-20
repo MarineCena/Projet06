@@ -6,7 +6,7 @@ cache = apt.Cache()
 # Now, lets update the package list
 cache.update()
 # We need to re-open the cache because it needs to read the package list
-cache.open(None)
+cache.open()
 # Now we can do the same as 'apt-get upgrade' does
 cache.upgrade()
 # or we can play 'apt-get dist-upgrade'
@@ -15,28 +15,68 @@ cache.upgrade(True)
 # A: You forgot to call commit()!
 cache.commit()
 
+pack1 = 'apache2'
+pack2 = 'php'
+pack3 = 'libapache2-mod-php'
+pack4 = 'php-imap php-ldap php-curl php-xmlrpc php-gd php-mysql php-cas'
+pack5 = 'mariadb-server'
+pack6 = 'apcupsd php-apcu'
+pack7 = 'phpmyadmin'
+
 def install_apache2():
-    os.system('sudo apt-get install apache2 php libapache2-mod-php')
+    cache = apt.cache.Cache()
+    cache.update()
+    pkg = cache[pack1]
+
+    if not pkg.is_installed:
+        pkg.mark_install()
+
+    cache.commit()
+
+    cache.open()
+    if cache[pack1].is_installed:
+        print(pack1, "est maintenant installé")
 
 
 install_apache2()
 
-
 def install_php():
-    os.system('sudo apt-get install php-imap php-ldap php-curl php-xmlrpc php-gd php-mysql php-cas')
+    cache = apt.cache.Cache()
+    cache.update()
+    pkg = cache[pack2]
 
+    if not pkg.is_installed:
+        pkg.mark_install()
+
+    cache.commit()
+
+    cache.open()
+    if cache[pack2].is_installed:
+        print(pack2, "est maintenant installé")
+    #os.system('sudo apt-get install php-imap php-ldap php-curl php-xmlrpc php-gd php-mysql php-cas')
 
 install_php()
 
-
 def install_mariadb():
-    os.system('sudo apt-get -y install mariadb-server')
+    cache = apt.cache.Cache()
+    cache.update()
+    pkg = cache[pack5]
+
+    if not pkg.is_installed:
+        pkg.mark_install()
+
+    cache.commit()
+
+    cache.open()
+    if cache[pack5].is_installed:
+        print(pack5, "est maintenant installé")
+
     os.system('sudo mysql_secure_installation')
 
 
 install_mariadb()
 
-
+"""
 def install_modules_comp():
     os.system('sudo apt-get install apcupsd php-apcu')
 
@@ -59,17 +99,17 @@ def create_bdd():
 create_bdd()
 
 
-def install_phpmyadmin():
-    os.system('sudo apt-get install phpmyadmin')
+#def install_phpmyadmin():
+    #os.system('sudo apt-get install phpmyadmin')
 
 
-install_phpmyadmin()
+#install_phpmyadmin()
 
 
 def install_glpi():
     os.system('cd /usr/src/')
     os.system('sudo wget https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz')
-    os.system('sudo tar -xvzf glpi-9.3.3.tgz -C /var/www/html')
+    os.system('sudo tar -xvzf glpi-9.5.5.tgz -C /var/www/html')
 
 
 install_glpi()
@@ -80,3 +120,4 @@ def droits_srv_lamp():
 
 
 droits_srv_lamp()
+"""
