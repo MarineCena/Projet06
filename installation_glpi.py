@@ -1,62 +1,48 @@
 import apt
-import os
 
+
+def install_maj():
 # First of all, open the cache
-cache = apt.Cache()
+    cache = apt.Cache()
 # Now, lets update the package list
-cache.update()
+    cache.update()
 # We need to re-open the cache because it needs to read the package list
-cache.open()
+    cache.open()
 # Now we can do the same as 'apt-get upgrade' does
-cache.upgrade()
+    cache.upgrade()
 # or we can play 'apt-get dist-upgrade'
-cache.upgrade(True)
+    cache.upgrade(True)
 # Q: Why does nothing happen?
 # A: You forgot to call commit()!
-cache.commit()
-
-pack1 = 'apache2'
-pack2 = 'php'
-pack3 = 'libapache2-mod-php'
-pack4 = 'php-imap php-ldap php-curl php-xmlrpc php-gd php-mysql php-cas'
-pack5 = 'mariadb-server'
-pack6 = 'apcupsd php-apcu'
-pack7 = 'phpmyadmin'
-
-def install_apache2():
-    cache = apt.cache.Cache()
-    cache.update()
-    pkg = cache[pack1]
-
-    if not pkg.is_installed:
-        pkg.mark_install()
-
     cache.commit()
 
-    cache.open()
-    if cache[pack1].is_installed:
-        print(pack1, "est maintenant installé")
+install_maj()
+
+liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl',
+                 'php-xmlrpc', 'php-gd', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd',
+                 'php-apcu']
+
+def install_paquets():
+
+    for pack in liste_paquets:
+        print("installation de", pack)
+        cache = apt.cache.Cache()
+        cache.update()
+        pkg = cache[pack]
+        if not pkg.is_installed:
+            pkg.mark_install()
+
+        cache.commit()
+
+        cache.open()
+        if cache[pack].is_installed:
+            print(pack, "est maintenant installé")
+install_paquets()
 
 
-install_apache2()
 
-def install_php():
-    cache = apt.cache.Cache()
-    cache.update()
-    pkg = cache[pack2]
 
-    if not pkg.is_installed:
-        pkg.mark_install()
-
-    cache.commit()
-
-    cache.open()
-    if cache[pack2].is_installed:
-        print(pack2, "est maintenant installé")
-    #os.system('sudo apt-get install php-imap php-ldap php-curl php-xmlrpc php-gd php-mysql php-cas')
-
-install_php()
-
+"""
 def install_mariadb():
     cache = apt.cache.Cache()
     cache.update()
@@ -76,7 +62,7 @@ def install_mariadb():
 
 install_mariadb()
 
-"""
+
 def install_modules_comp():
     os.system('sudo apt-get install apcupsd php-apcu')
 
