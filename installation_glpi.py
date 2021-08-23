@@ -14,6 +14,7 @@ def install_maj():
     cache.upgrade(True)
 # Q: Why does nothing happen?
 # A: You forgot to call commit()!
+<<<<<<< HEAD
     cache.commit()
 
 install_maj()
@@ -23,6 +24,34 @@ liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap',
                  'php-apcu']
 
 def install_paquets():
+=======
+cache.commit()
+liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl', 'php-xmlrpc',
+                 'php-gd ', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd php-apcu', 'phpmyadmin']
+
+
+def install_pkg():
+    cache = apt.cache.Cache()
+    cache.update()
+    pkg = cache[pkg]
+
+    for pkg in liste_paquets:
+
+        print(pkg)
+        if not pkg.is_installed:
+            pkg.mark_install()
+
+            cache.commit()
+
+            cache.open()
+            if cache[pkg].is_installed:
+                print(pkg, "est maintenant installé")
+
+            pkg += 1
+
+"""
+install_apache2()
+>>>>>>> origin/main
 
     for pack in liste_paquets:
         print("installation de", pack)
@@ -42,7 +71,12 @@ install_paquets()
 
 
 
+<<<<<<< HEAD
 """
+=======
+
+
+>>>>>>> origin/main
 def install_mariadb():
     cache = apt.cache.Cache()
     cache.update()
