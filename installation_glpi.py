@@ -1,4 +1,5 @@
 import apt
+import subprocess
 
 
 def install_maj():
@@ -14,130 +15,71 @@ def install_maj():
     cache.upgrade(True)
 # Q: Why does nothing happen?
 # A: You forgot to call commit()!
-<<<<<<< HEAD
     cache.commit()
 
 install_maj()
 
 liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl',
                  'php-xmlrpc', 'php-gd', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd',
-                 'php-apcu']
+               'php-apcu']
 
-def install_paquets():
-=======
-cache.commit()
-liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl', 'php-xmlrpc',
-                 'php-gd ', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd php-apcu', 'phpmyadmin']
+#def install_paquets():
 
-
-def install_pkg():
+for pack in liste_paquets:
+    print("installation de", pack)
     cache = apt.cache.Cache()
     cache.update()
-    pkg = cache[pkg]
-
-    for pkg in liste_paquets:
-
-        print(pkg)
-        if not pkg.is_installed:
-            pkg.mark_install()
-
-            cache.commit()
-
-            cache.open()
-            if cache[pkg].is_installed:
-                print(pkg, "est maintenant installé")
-
-            pkg += 1
-
-"""
-install_apache2()
->>>>>>> origin/main
-
-    for pack in liste_paquets:
-        print("installation de", pack)
-        cache = apt.cache.Cache()
-        cache.update()
-        pkg = cache[pack]
-        if not pkg.is_installed:
-            pkg.mark_install()
-
-        cache.commit()
-
-        cache.open()
-        if cache[pack].is_installed:
-            print(pack, "est maintenant installé")
-install_paquets()
-
-
-
-
-<<<<<<< HEAD
-"""
-=======
-
-
->>>>>>> origin/main
-def install_mariadb():
-    cache = apt.cache.Cache()
-    cache.update()
-    pkg = cache[pack5]
-
+    pkg = cache[pack]
     if not pkg.is_installed:
         pkg.mark_install()
 
     cache.commit()
 
     cache.open()
-    if cache[pack5].is_installed:
-        print(pack5, "est maintenant installé")
+    if cache[pack].is_installed:
+        print(pack, "est maintenant installé")
 
-    os.system('sudo mysql_secure_installation')
-
-
-install_mariadb()
+#install_paquets()
 
 
-def install_modules_comp():
-    os.system('sudo apt-get install apcupsd php-apcu')
+#def install_mariadb():
+
+subprocess.run(['mysql_secure_installation'])
 
 
-install_modules_comp()
+#install_mariadb()
+
+#def restart_services():
+#subprocess.run(['/etc/init.d/apache2 restart'])
+#"/etc/init.d/mysql restart"])
 
 
-def restart_services():
-    os.system('/etc/init.d/apache2 restart')
-    os.system('/etc/init.d/mysql restart')
 
 
-restart_services()
+
+#def create_bdd():
+subprocess.run(['mysql -u root -p'])
 
 
-def create_bdd():
-    os.system('sudo mysql -u root -p')
+#create_bdd()
 
-
-create_bdd()
-
-
-#def install_phpmyadmin():
-    #os.system('sudo apt-get install phpmyadmin')
+"""
+def install_phpmyadmin():
+    subprocess.run(["sudo apt-get install phpmyadmin"])
 
 
 #install_phpmyadmin()
 
 
 def install_glpi():
-    os.system('cd /usr/src/')
-    os.system('sudo wget https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz')
-    os.system('sudo tar -xvzf glpi-9.5.5.tgz -C /var/www/html')
-
+    subprocess.run(["cd /usr/src/", "sudo wget https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz",
+                   "sudo tar -xvzf glpi-9.5.5.tgz -C /var/www/html"])
 
 install_glpi()
 
 
 def droits_srv_lamp():
-    os.system('sudo chown -R www-data /var/www/html/glpi/')
+    subprocess.run(["sudo chown -R www-data /var/www/html/glpi/"])
 
 
-droits_srv_lamp()
-"""
+droits_srv_lamp() """
