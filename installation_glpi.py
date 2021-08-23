@@ -14,30 +14,30 @@ cache.upgrade(True)
 # Q: Why does nothing happen?
 # A: You forgot to call commit()!
 cache.commit()
+liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl', 'php-xmlrpc',
+                 'php-gd ', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd php-apcu', 'phpmyadmin']
 
-pack1 = 'apache2'
-pack2 = 'php'
-pack3 = 'libapache2-mod-php'
-pack4 = 'php-imap php-ldap php-curl php-xmlrpc php-gd php-mysql php-cas'
-pack5 = 'mariadb-server'
-pack6 = 'apcupsd php-apcu'
-pack7 = 'phpmyadmin'
 
-def install_apache2():
+def install_pkg():
     cache = apt.cache.Cache()
     cache.update()
-    pkg = cache[pack1]
+    pkg = cache[pkg]
 
-    if not pkg.is_installed:
-        pkg.mark_install()
+    for pkg in liste_paquets:
 
-    cache.commit()
+        print(pkg)
+        if not pkg.is_installed:
+            pkg.mark_install()
 
-    cache.open()
-    if cache[pack1].is_installed:
-        print(pack1, "est maintenant installé")
+            cache.commit()
 
+            cache.open()
+            if cache[pkg].is_installed:
+                print(pkg, "est maintenant installé")
 
+            pkg += 1
+
+"""
 install_apache2()
 
 def install_php():
@@ -56,6 +56,8 @@ def install_php():
     #os.system('sudo apt-get install php-imap php-ldap php-curl php-xmlrpc php-gd php-mysql php-cas')
 
 install_php()
+
+
 
 def install_mariadb():
     cache = apt.cache.Cache()
@@ -76,7 +78,7 @@ def install_mariadb():
 
 install_mariadb()
 
-"""
+
 def install_modules_comp():
     os.system('sudo apt-get install apcupsd php-apcu')
 
