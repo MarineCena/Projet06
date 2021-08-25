@@ -17,7 +17,7 @@ def install_maj():
 # A: You forgot to call commit()!
     cache.commit()
 
-#install_maj()
+install_maj()
 
 liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl',
                  'php-xmlrpc', 'php-gd', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd',
@@ -39,13 +39,18 @@ def install_paquets():
         if cache[pack].is_installed:
             print(pack, "est maintenant installé")
 
-#install_paquets()
+install_paquets()
+
+def secure_sql():
+    subprocess.run(['mysql_secure_installation'])
+
+secure_sql()
 
 def restart_services():
     subprocess.run(['/etc/init.d/apache2', 'restart'])
     subprocess.run(['/etc/init.d/mysql', 'restart'])
 
-#restart_services()
+restart_services()
 
 
 def create_bdd():
@@ -53,14 +58,28 @@ def create_bdd():
 
     mydb = mysql.connector.connect(
         host="localhost",
-        user="yourusername",
-        password="yourpassword"
+        user="root",
+        password="19022012"
     )
 
     mycursor = mydb.cursor()
 
     mycursor.execute("CREATE DATABASE mydatabase")
+    # granting all permissions on all databases and their
+    # tables of geeksforgeeks user permission also includes
+    # table and column grants
+    mycursor.execute("Grant all on *.* to database")
 
+    # print all privileges of geeksforgeeks user
+    mycursor.execute("Show grants for geeksforgeeks@localhost")
+    result = mycursor.fetchall()
+    print(result)
+
+    # commit privileges
+    mycursor.execute("Flush Privileges")
+
+    # close connection to MySQL
+    connection.close()
 
 create_bdd()
 
