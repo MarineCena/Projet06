@@ -23,49 +23,50 @@ liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap',
                  'php-xmlrpc', 'php-gd', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd',
                'php-apcu']
 
-#def install_paquets():
+def install_paquets():
 
-for pack in liste_paquets:
-    print("installation de", pack)
-    cache = apt.cache.Cache()
-    cache.update()
-    pkg = cache[pack]
-    if not pkg.is_installed:
-        pkg.mark_install()
+    for pack in liste_paquets:
+        print("installation de", pack)
+        cache = apt.cache.Cache()
+        cache.update()
+        pkg = cache[pack]
+        if not pkg.is_installed:
+            pkg.mark_install()
 
-    cache.commit()
+        cache.commit()
 
-    cache.open()
-    if cache[pack].is_installed:
-        print(pack, "est maintenant installé")
+        cache.open()
+        if cache[pack].is_installed:
+            print(pack, "est maintenant installé")
 
-#install_paquets()
+install_paquets()
 
 
 #def install_mariadb():
 
-subprocess.run(['mysql_secure_installation'])
+    #subprocess.run(['mysql_secure_installation'])
 
 
-#install_mariadb()
+#install_mariadb() a virer
+
 
 #def restart_services():
-#subprocess.run(['/etc/init.d/apache2 restart'])
-#"/etc/init.d/mysql restart"])
+subprocess.run(['/etc/init.d/apache2', 'restart'])
+subprocess.run(['/etc/init.d/mysql', 'restart'])
 
 
 
 
 
 #def create_bdd():
-subprocess.run(['mysql -u root -p'])
+    #subprocess.run(['mysql -u root -p'])
 
 
-#create_bdd()
+#create_bdd() à remplacer mysql -e
 
-"""
-def install_phpmyadmin():
-    subprocess.run(["sudo apt-get install phpmyadmin"])
+
+#def install_phpmyadmin():
+    #subprocess.run(["sudo apt-get install phpmyadmin"])
 
 
 #install_phpmyadmin()
@@ -82,4 +83,4 @@ def droits_srv_lamp():
     subprocess.run(["sudo chown -R www-data /var/www/html/glpi/"])
 
 
-droits_srv_lamp() """
+#droits_srv_lamp()
