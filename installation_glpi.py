@@ -17,7 +17,7 @@ def install_maj():
 # A: You forgot to call commit()!
     cache.commit()
 
-install_maj()
+#install_maj()
 
 liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl',
                  'php-xmlrpc', 'php-gd', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd',
@@ -39,30 +39,30 @@ def install_paquets():
         if cache[pack].is_installed:
             print(pack, "est maintenant installé")
 
-install_paquets()
+#install_paquets()
+
+def restart_services():
+    subprocess.run(['/etc/init.d/apache2', 'restart'])
+    subprocess.run(['/etc/init.d/mysql', 'restart'])
+
+#restart_services()
 
 
-#def install_mariadb():
+def create_bdd():
+    import mysql.connector
 
-    #subprocess.run(['mysql_secure_installation'])
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="yourusername",
+        password="yourpassword"
+    )
 
+    mycursor = mydb.cursor()
 
-#install_mariadb() a virer
-
-
-#def restart_services():
-subprocess.run(['/etc/init.d/apache2', 'restart'])
-subprocess.run(['/etc/init.d/mysql', 'restart'])
-
-
-
+    mycursor.execute("CREATE DATABASE mydatabase")
 
 
-#def create_bdd():
-    #subprocess.run(['mysql -u root -p'])
-
-
-#create_bdd() à remplacer mysql -e
+create_bdd()
 
 
 #def install_phpmyadmin():
@@ -76,7 +76,7 @@ def install_glpi():
     subprocess.run(["cd /usr/src/", "sudo wget https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz",
                    "sudo tar -xvzf glpi-9.5.5.tgz -C /var/www/html"])
 
-install_glpi()
+#install_glpi()
 
 
 def droits_srv_lamp():
