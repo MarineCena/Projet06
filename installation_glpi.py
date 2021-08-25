@@ -65,13 +65,6 @@ def create_bdd():
 create_bdd()
 
 
-#def install_phpmyadmin():
-    #subprocess.run(["sudo apt-get install phpmyadmin"])
-
-
-#install_phpmyadmin()
-
-
 def install_glpi():
     subprocess.run(["cd /usr/src/", "sudo wget https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz",
                    "sudo tar -xvzf glpi-9.5.5.tgz -C /var/www/html"])
