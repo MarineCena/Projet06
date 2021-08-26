@@ -3,18 +3,11 @@ import subprocess
 
 
 def install_maj():
-# First of all, open the cache
+
     cache = apt.Cache()
-# Now, lets update the package list
     cache.update()
-# We need to re-open the cache because it needs to read the package list
     cache.open()
-# Now we can do the same as 'apt-get upgrade' does
-    cache.upgrade()
-# or we can play 'apt-get dist-upgrade'
     cache.upgrade(True)
-# Q: Why does nothing happen?
-# A: You forgot to call commit()!
     cache.commit()
 
 install_maj()
@@ -41,11 +34,6 @@ def install_paquets():
 
 install_paquets()
 
-#def secure_sql():
- #   subprocess.run(['mysql_secure_installation'])
-
-#secure_sql()
-
 def restart_services():
     subprocess.run(['/etc/init.d/apache2', 'restart'])
     subprocess.run(['/etc/init.d/mysql', 'restart'])
@@ -68,11 +56,11 @@ def create_bdd():
 
         mycursor = mydb.cursor()
 
-        mycursor.execute("CREATE DATABASE DB")
+        mycursor.execute("CREATE DATABASE BDD")
 
         cnx = mysql.connector.connect(user='root',
                                       password='19022012',
-                                      database='DB')
+                                      database='BDD')
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -105,3 +93,4 @@ def droits_srv_lamp():
     shutil.chown("/var/www/html/glpi/", "www-data")
 
 droits_srv_lamp()
+
