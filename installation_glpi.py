@@ -68,11 +68,11 @@ def create_bdd():
 
         mycursor = mydb.cursor()
 
-        mycursor.execute("CREATE DATABASE GLPIDB")
+        mycursor.execute("CREATE DATABASE DB")
 
         cnx = mysql.connector.connect(user='root',
                                       password='19022012',
-                                      database='GLPIDB')
+                                      database='DB')
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -83,16 +83,19 @@ def create_bdd():
     else:
         cnx.close()
 
-#create_bdd()
+create_bdd()
 
 
 def install_glpi():
     import wget
+    import tarfile
+
     url = 'https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz'
     filename = wget.download(url)
 
-
-#                   "sudo tar -xvzf glpi-9.5.5.tgz -C /var/www/html"])
+    tar = tarfile.open(filename, "r:gz")
+    tar.extractall("/var/www/html/")
+    tar.close()
 
 install_glpi()
 
