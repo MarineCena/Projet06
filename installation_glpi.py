@@ -41,10 +41,10 @@ def install_paquets():
 
 install_paquets()
 
-def secure_sql():
-    subprocess.run(['mysql_secure_installation'])
+#def secure_sql():
+ #   subprocess.run(['mysql_secure_installation'])
 
-secure_sql()
+#secure_sql()
 
 def restart_services():
     subprocess.run(['/etc/init.d/apache2', 'restart'])
@@ -55,31 +55,31 @@ restart_services()
 
 def create_bdd():
     import mysql.connector
+    from mysql.connector import errorcode
 
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="19022012"
-    )
+    try:
+        mydb = mysql.connector.connect(
+            host="127.0.0.1",
+            user="root",
+            password="19022012"
+        )
 
-    mycursor = mydb.cursor()
+        mycursor = mydb.cursor()
 
-    mycursor.execute("CREATE DATABASE mydatabase")
-    # granting all permissions on all databases and their
-    # tables of geeksforgeeks user permission also includes
-    # table and column grants
-    mycursor.execute("Grant all on *.* to database")
+        mycursor.execute("CREATE DATABASE glpi")
 
-    # print all privileges of geeksforgeeks user
-    mycursor.execute("Show grants for geeksforgeeks@localhost")
-    result = mycursor.fetchall()
-    print(result)
-
-    # commit privileges
-    mycursor.execute("Flush Privileges")
-
-    # close connection to MySQL
-    connection.close()
+        cnx = mysql.connector.connect(user='root',
+                                      password='19022012',
+                                      database='glpi')
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+    else:
+        cnx.close()
 
 create_bdd()
 
