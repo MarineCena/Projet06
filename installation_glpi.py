@@ -83,14 +83,18 @@ def create_bdd():
     else:
         cnx.close()
 
-create_bdd()
+#create_bdd()
 
 
 def install_glpi():
-    subprocess.run(["cd /usr/src/", "sudo wget https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz",
-                   "sudo tar -xvzf glpi-9.5.5.tgz -C /var/www/html"])
+    import wget
+    url = 'https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz'
+    filename = wget.download(url)
 
-#install_glpi()
+
+#                   "sudo tar -xvzf glpi-9.5.5.tgz -C /var/www/html"])
+
+install_glpi()
 
 
 def droits_srv_lamp():
