@@ -61,7 +61,9 @@ def create_bdd():
         mydb = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
-            password="19022012"
+            password="19022012",
+            unix_socket="/var/run/mysqld/mysqld.sock",
+            port="3306"
         )
 
         mycursor = mydb.cursor()
