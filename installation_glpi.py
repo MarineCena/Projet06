@@ -57,11 +57,11 @@ def create_bdd():
 
         mycursor = mydb.cursor()
 
-        mycursor.execute("CREATE DATABASE BDD")
+        mycursor.execute("CREATE DATABASE glpidb")
 
         cnx = mysql.connector.connect(user='root',
                                       password='19022012',
-                                      database='BDD')
+                                      database='glpidb')
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -90,8 +90,34 @@ install_glpi()
 
 
 def droits_srv_lamp():
-    import shutil
-    shutil.chown("/var/www/html/glpi/", "www-data")
+    def chown(path="/var/www/html/glpi/", user='www-data', group=None, recursive=True):
+
+        import shutil
+        import os
+
+        """
+            Change user/group ownership of file
+
+            :param path: path of file or directory
+            :param str user: new owner username
+            :param str group: new owner group name
+            :param bool recursive: set files/dirs recursively
+
+            """
+        try:
+            if not recursive or os.path.isfile(path):
+                shutil.chown(path, user, group)
+            else:
+                for root, dirs, files in os.walk(path):
+                    shutil.chown(root, user, group)
+                    for item in dirs:
+                        shutil.chown(os.path.join(root, item), user, group)
+                    for item in files:
+                        shutil.chown(os.path.join(root, item), user, group)
+        except OSError as e:
+            raise UtilsException(e)
+
+    chown()
 
 droits_srv_lamp()
 
