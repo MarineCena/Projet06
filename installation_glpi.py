@@ -101,7 +101,7 @@ install_glpi()
 
 
 def droits_srv_lamp():
-    subprocess.run(["sudo chown -R www-data /var/www/html/glpi/"])
+    import shutil
+    shutil.chown("/var/www/html/glpi/", "www-data")
 
-
-#droits_srv_lamp()
+droits_srv_lamp()
