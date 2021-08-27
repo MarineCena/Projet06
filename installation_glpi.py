@@ -50,8 +50,8 @@ def create_bdd():
         mydb = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="19022012",
-            unix_socket="/var/run/mysqld/mysqld.sock",
+            password="test",
+            unix_socket="/run/mysqld/mysqld.sock",
             port="3306"
         )
 
@@ -60,7 +60,7 @@ def create_bdd():
         mycursor.execute("CREATE DATABASE glpidb")
 
         cnx = mysql.connector.connect(user='root',
-                                      password='19022012',
+                                      password='test',
                                       database='glpidb')
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
