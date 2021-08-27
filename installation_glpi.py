@@ -50,18 +50,19 @@ def create_bdd():
         mydb = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="test",
-            unix_socket="/run/mysqld/mysqld.sock",
-            port="3306"
+            passwd="19022012",
+            unix_socket="/var/run/mysqld/mysqld.sock"
         )
 
         mycursor = mydb.cursor()
 
-        mycursor.execute("CREATE DATABASE glpidb")
+        mycursor.execute("CREATE USER 'glpiuser'@'localhost' IDENTIFIED BY ''")
+        mycursor.execute("grant all privileges on *.* to 'glpiuser'@'localhost'")
+        mycursor.execute("CREATE DATABASE GLPIdb")
 
-        cnx = mysql.connector.connect(user='root',
-                                      password='test',
-                                      database='glpidb')
+        cnx = mysql.connector.connect(user='glpiuser',
+                                      passwd='',
+                                      database='GLPIdb')
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
