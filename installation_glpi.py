@@ -42,39 +42,44 @@ def restart_services():
 restart_services()
 
 
-def create_bdd():
+def create_database():
     import mysql.connector
-    from mysql.connector import errorcode
+    #from mysql.connector import errorcode
 
-    try:
-        mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="19022012",
-            unix_socket="/var/run/mysqld/mysqld.sock"
-        )
+    mydb=mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="19022012",
+        unix_socket="/var/run/mysqld/mysqld.sock"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdb")
 
-        mycursor = mydb.cursor()
+create_database()
 
-        mycursor.execute("CREATE USER 'glpiuser'@'localhost' IDENTIFIED BY ''")
-        mycursor.execute("grant all privileges on *.* to 'glpiuser'@'localhost'")
-        mycursor.execute("CREATE DATABASE GLPIdb")
 
-        cnx = mysql.connector.connect(user='glpiuser',
-                                      passwd='',
-                                      database='GLPIdb')
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
-    else:
-        cnx.close()
+def create_user():
+    import mysql.connector
 
-create_bdd()
+    mydb=mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="19022012",
+        unix_socket="/var/run/mysqld/mysqld.sock"
+    )
+    mycursor=mydb.cursor()
+    mycursor.execute("DROP USER IF EXISTS 'glpiuser'@'localhost'")
+    mycursor.execute("CREATE USER 'glpiuser'@'localhost' IDENTIFIED BY ''")
+    mycursor.execute("grant all privileges on *.* to 'glpiuser'@'localhost'")
 
+    mycursor.execute(" select User from mysql.user")
+
+    for user in mycursor:
+        if user == ('glpiuser',):
+            print("l'utilisateur", (user), "a bien été crée")
+
+
+create_user()
 
 def install_glpi():
     import wget
