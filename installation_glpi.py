@@ -15,7 +15,7 @@ install_maj()
 
 liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl',
                  'php-xmlrpc', 'php-gd', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd',
-               'php-apcu']
+               'php-apcu', 'php-intl', 'php-mbstring']
 
 def install_paquets():
 
