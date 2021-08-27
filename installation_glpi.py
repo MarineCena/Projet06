@@ -130,7 +130,6 @@ droits_srv_lamp()
 def config_glpi():
 
     import subprocess
-    #subprocess.run(['cd', '/var/www/html/glpi'])
     subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
 
 config_glpi()
