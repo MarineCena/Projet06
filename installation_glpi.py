@@ -96,7 +96,7 @@ install_glpi()
 
 
 def droits_srv_lamp():
-    def chown(path="/var/www/html/glpi/", user='www-data', group=None, recursive=True):
+    def chown(path="/var/www/html/", user='www-data', group=None, recursive=True):
 
         import shutil
         import os
@@ -130,7 +130,7 @@ droits_srv_lamp()
 def config_glpi():
 
     import subprocess
-    subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
+    subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
 
 config_glpi()
 
