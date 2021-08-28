@@ -95,37 +95,34 @@ def install_glpi():
 install_glpi()
 
 
-def droits_srv_lamp():
-    def chown(path="/var/www/html/", user='www-data', group=None, recursive=True):
+def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True):
+    import shutil
+    import os
 
-        import shutil
-        import os
+    """
+        Change user/group ownership of file
+
+        :param path: path of file or directory
+        :param str user: new owner username
+        :param str group: new owner group name
+        :param bool recursive: set files/dirs recursively
 
         """
-            Change user/group ownership of file
+    try :
+        if not recursive or os.path.isfile(path) :
+            shutil.chown(path, user, group)
+        else :
+            for root, dirs, files in os.walk(path):
+                shutil.chown(root, user, group)
+                for item in dirs:
+                    shutil.chown(os.path.join(root, item), user, group)
+                for item in files:
+                    shutil.chown(os.path.join(root, item), user, group)
+    except OSError as e :
+        raise UtilsException(e)
 
-            :param path: path of file or directory
-            :param str user: new owner username
-            :param str group: new owner group name
-            :param bool recursive: set files/dirs recursively
 
-            """
-        try:
-            if not recursive or os.path.isfile(path):
-                shutil.chown(path, user, group)
-            else:
-                for root, dirs, files in os.walk(path):
-                    shutil.chown(root, user, group)
-                    for item in dirs:
-                        shutil.chown(os.path.join(root, item), user, group)
-                    for item in files:
-                        shutil.chown(os.path.join(root, item), user, group)
-        except OSError as e:
-            raise UtilsException(e)
-
-    chown()
-
-droits_srv_lamp()
+chown()
 
 def config_glpi():
 
@@ -133,4 +130,6 @@ def config_glpi():
     subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
 
 config_glpi()
+
+print(chown())
 
