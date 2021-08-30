@@ -131,5 +131,5 @@ def config_glpi():
 
 config_glpi()
 
-print(chown())
+chown()
 
