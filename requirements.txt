@@ -5,7 +5,7 @@ chardet==3.0.4
 cryptography==2.1.4
 cupshelpers==1.0
 defer==1.0.6
-distro-info===0.18ubuntu0.18.04.1
+distro-info===0.18.04.1
 html5lib==0.999999999
 httplib2==0.9.2
 idna==2.6
@@ -28,7 +28,7 @@ pycrypto==2.6.1
 pycups==1.9.73
 pygobject==3.26.1
 pysmbc==1.0.15.6
-python-apt==1.6.5+ubuntu0.6
+python-apt==0.6
 python-debian==0.1.32
 python-xapp==1.0.0
 pyxdg==0.25
