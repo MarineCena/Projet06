@@ -36,15 +36,17 @@ def install_paquets():
 install_paquets()
 
 def restart_services():
-    subprocess.run(['/etc/init.d/apache2', 'restart'])
-    subprocess.run(['/etc/init.d/mysql', 'restart'])
+    subprocess.run(['systemctl', 'restart', 'apache2'])
+    subprocess.run(['systemctl', 'status', 'apache2'])
+    subprocess.run(['systemctl', 'restart', 'mysql'])
+    subprocess.run(['systemctl', 'status', 'mysql'])
 
 restart_services()
 
 
 def create_database():
     import mysql.connector
-    #from mysql.connector import errorcode
+
 
     mydb=mysql.connector.connect(
         host="localhost",
@@ -81,18 +83,17 @@ def create_user():
 
 create_user()
 
-def install_glpi():
+def install_glpi(url,path):
     import wget
     import tarfile
 
-    url = 'https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz'
     filename = wget.download(url)
 
     tar = tarfile.open(filename, "r:gz")
-    tar.extractall("/var/www/html/")
+    tar.extractall(path)
     tar.close()
 
-install_glpi()
+install_glpi('https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz',"/var/www/html/")
 
 
 def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True):
@@ -127,7 +128,7 @@ chown()
 def config_glpi():
 
     import subprocess
-    subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
+    subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-n', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
 
 config_glpi()
 
