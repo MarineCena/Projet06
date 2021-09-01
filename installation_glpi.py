@@ -131,3 +131,12 @@ config_glpi()
 
 chown()
 
+def del_file(file):
+    if os.path.exists(file):
+        os.remove(file)
+    else:
+        print("Impossible de supprimer le fichier car il n'existe pas")
+
+del_file("/var/www/html/glpi/install/install.php")
+
+
