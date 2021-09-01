@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 import apt
 import subprocess
-
+import mysql.connector
+import wget
+import tarfile
+import shutil
+import os
 
 def install_maj(cache):
-    import apt
 
     cache.update()
     cache.open()
@@ -18,7 +21,7 @@ liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap',
                'php-apcu', 'php-intl', 'php-mbstring']
 
 def install_paquets(liste):
-    #liste = liste_paquets
+
     for pack in liste_paquets:
         print("installation de", pack)
         cache = apt.Cache()
@@ -37,7 +40,6 @@ install_paquets(liste_paquets)
 
 
 def restart_services(service1,service2):
-    import subprocess
 
     subprocess.run(['systemctl', 'restart', service1])
     subprocess.run(['systemctl', 'status', service1])
@@ -48,7 +50,6 @@ restart_services('apache2', 'mysql')
 
 
 def create_database():
-    import mysql.connector
 
     mydb=mysql.connector.connect(
         host="localhost",
@@ -59,11 +60,10 @@ def create_database():
     mycursor=mydb.cursor()
     mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdb")
 
-#create_database()
+create_database()
 
 
 def create_user():
-    import mysql.connector
 
     mydb=mysql.connector.connect(
         host="localhost",
@@ -86,8 +86,6 @@ def create_user():
 create_user()
 
 def install_glpi(url,path):
-    import wget
-    import tarfile
 
     filename = wget.download(url)
 
@@ -99,8 +97,6 @@ install_glpi('https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-
 
 
 def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True):
-    import shutil
-    import os
 
     """
         Change user/group ownership of file
@@ -111,28 +107,27 @@ def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True
         :param bool recursive: set files/dirs recursively
 
         """
-    try :
-        if not recursive or os.path.isfile(path) :
+    try:
+        if not recursive or os.path.isfile(path):
             shutil.chown(path, user, group)
-        else :
+        else:
             for root, dirs, files in os.walk(path):
                 shutil.chown(root, user, group)
                 for item in dirs:
                     shutil.chown(os.path.join(root, item), user, group)
                 for item in files:
                     shutil.chown(os.path.join(root, item), user, group)
-    except OSError as e :
+    except OSError as e:
         raise UtilsException(e)
 
 
-#chown()
+chown()
 
 def config_glpi():
 
-    import subprocess
     subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-n', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
 
-#config_glpi()
+config_glpi()
 
-#chown()
+chown()
 
