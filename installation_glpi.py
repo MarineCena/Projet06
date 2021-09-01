@@ -14,7 +14,6 @@ def install_maj(cache):
     cache.upgrade(True)
     cache.commit()
 
-install_maj(apt.Cache())
 
 liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl',
                  'php-xmlrpc', 'php-gd', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd',
@@ -36,18 +35,12 @@ def install_paquets(liste):
         if cache[pack].is_installed:
             print(pack, "est maintenant installé")
 
-install_paquets(liste_paquets)
-
-
 def restart_services(service1,service2):
 
     subprocess.run(['systemctl', 'restart', service1])
     subprocess.run(['systemctl', 'status', service1])
     subprocess.run(['systemctl', 'restart', service2])
     subprocess.run(['systemctl', 'status', service2])
-
-restart_services('apache2', 'mysql')
-
 
 def create_database():
 
@@ -59,9 +52,6 @@ def create_database():
     )
     mycursor=mydb.cursor()
     mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdb")
-
-create_database()
-
 
 def create_user():
 
@@ -82,9 +72,6 @@ def create_user():
         if user == ('glpiuser',):
             print("l'utilisateur", (user), "a bien été crée")
 
-
-create_user()
-
 def install_glpi(url,path):
 
     filename = wget.download(url)
@@ -92,9 +79,6 @@ def install_glpi(url,path):
     tar = tarfile.open(filename, "r:gz")
     tar.extractall(path)
     tar.close()
-
-install_glpi('https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz',"/var/www/html/")
-
 
 def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True):
 
@@ -120,16 +104,9 @@ def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True
     except OSError as e:
         raise UtilsException(e)
 
-
-chown()
-
 def config_glpi():
 
     subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-n', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
-
-config_glpi()
-
-chown()
 
 def del_file(file):
     if os.path.exists(file):
@@ -137,6 +114,18 @@ def del_file(file):
     else:
         print("Impossible de supprimer le fichier car il n'existe pas")
 
+install_maj(apt.Cache())
+install_paquets(liste_paquets)
+restart_services('apache2', 'mysql')
+create_database()
+create_user()
+install_glpi('https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz',"/var/www/html/")
+chown()
+config_glpi()
+chown()
 del_file("/var/www/html/glpi/install/install.php")
+
+
+
 
 
