@@ -3,25 +3,25 @@ import apt
 import subprocess
 
 
-def install_maj():
+def install_maj(cache):
+    import apt
 
-    cache = apt.Cache()
     cache.update()
     cache.open()
     cache.upgrade(True)
     cache.commit()
 
-install_maj()
+install_maj(apt.Cache())
 
 liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl',
                  'php-xmlrpc', 'php-gd', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd',
                'php-apcu', 'php-intl', 'php-mbstring']
 
-def install_paquets():
-
+def install_paquets(liste):
+    #liste = liste_paquets
     for pack in liste_paquets:
         print("installation de", pack)
-        cache = apt.cache.Cache()
+        cache = apt.Cache()
         cache.update()
         pkg = cache[pack]
         if not pkg.is_installed:
@@ -33,20 +33,22 @@ def install_paquets():
         if cache[pack].is_installed:
             print(pack, "est maintenant installé")
 
-install_paquets()
+install_paquets(liste_paquets)
 
-def restart_services():
-    subprocess.run(['systemctl', 'restart', 'apache2'])
-    subprocess.run(['systemctl', 'status', 'apache2'])
-    subprocess.run(['systemctl', 'restart', 'mysql'])
-    subprocess.run(['systemctl', 'status', 'mysql'])
 
-restart_services()
+def restart_services(service1,service2):
+    import subprocess
+
+    subprocess.run(['systemctl', 'restart', service1])
+    subprocess.run(['systemctl', 'status', service1])
+    subprocess.run(['systemctl', 'restart', service2])
+    subprocess.run(['systemctl', 'status', service2])
+
+restart_services('apache2', 'mysql')
 
 
 def create_database():
     import mysql.connector
-
 
     mydb=mysql.connector.connect(
         host="localhost",
@@ -57,7 +59,7 @@ def create_database():
     mycursor=mydb.cursor()
     mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdb")
 
-create_database()
+#create_database()
 
 
 def create_user():
@@ -123,14 +125,14 @@ def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True
         raise UtilsException(e)
 
 
-chown()
+#chown()
 
 def config_glpi():
 
     import subprocess
     subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-n', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
 
-config_glpi()
+#config_glpi()
 
-chown()
+#chown()
 
