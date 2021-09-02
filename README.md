@@ -30,7 +30,7 @@ Avant de lancer le programme sur votre machine il est impératif de télécharge
 Le script doit être lancé depuis le terminal via la commande :
 Python3 Installation_glpi.py ou ./Installation_glpi.py 
 
-![exe](https://zupimages.net/viewer.php?id=21/35/zh7x.png)
-![exe2](https://zupimages.net/viewer.php?id=21/35/8s4a.png)
+![exe](https://zupimages.net/up/21/35/zh7x.png)
+![exe2](https://zupimages.net/up/21/35/8mxy.png)
 
 
