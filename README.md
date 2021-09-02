@@ -8,24 +8,29 @@ INSTALLATION ET CONFIGURATION AUTOMATIQUE DE GLPI
 
 > INTRODUCTION 
 
-Dans le cadre du projet 6 « Participez à la vie de la communauté OpenSource » de la formation « Administrateur Infrastructure & Cloud » d’OpenClassrooms, je dois développer un programme permettant d’automatiser une ou plusieurs tâches au choix. 
+Dans le cadre du projet 6 Â«Â Participez Ã  la vie de la communautÃ© OpenSourceÂ Â» de la formation Â«Â Administrateur Infrastructure & CloudÂ Â» dâ€™OpenClassrooms, je dois dÃ©velopper un programme permettant dâ€™automatiser une ou plusieurs tÃ¢ches au choix. 
 
-Il s’agit donc d’un programme en python qui permet d’installer et de configurer le logiciel GLPI afin d‘obtenir directement, lors de la connexion à l’URL « adresseIP/glpi », la page de connexion de GLPI (identifiant glpi ; mdp : glpi).
+Il sâ€™agit donc dâ€™un programme en python qui permet dâ€™installer et de configurer le logiciel GLPI afin dâ€˜obtenir directement, lors de la connexion Ã  lâ€™URL Â«Â adresseIP/glpiÂ Â», la page de connexion de GLPI (identifiant glpiÂ ; mdpÂ : glpi).
 
 
 
 > PRE-REQUIS 
 
-Avant de lancer le programme sur votre machine il est impératif de télécharger les paquets suivants :
-* « Python3-apt »
-* Le module python « mysql-connector-python »
-* Le module python « wget »
-*    « php-simplexml » peut être nécessaire sous Debian
+Avant de lancer le programme sur votre machine il est impÃ©ratif de tÃ©lÃ©charger les paquets suivantsÂ :
+* Â«Â Python3-aptÂ Â»
+* Le module python Â«Â mysql-connector-pythonÂ Â»
+* Le module python Â«Â wgetÂ Â»
+*   ![image](https://user-images.githubusercontent.com/88936598/131858154-e5af649d-7489-46b6-8271-1d8e70e8e4f1.png)
+ Â« php-simplexml Â» peut Ãªtre nÃ©cessaire sous Debian ![image](https://user-images.githubusercontent.com/88936598/131858172-ecacdd5f-00c4-4117-9130-677ca0f4cb4b.png)
+
 
 
 > EXECUTION DU SCRIPT
 
-Le script doit être lancé depuis le terminal via la commande :
+Le script doit Ãªtre lancÃ© depuis le terminal via la commande :
 Python3 Installation_glpi.py ou ./Installation_glpi.py 
+
+![exe](https://zupimages.net/viewer.php?id=21/35/zh7x.png)
+![exe2](https://zupimages.net/viewer.php?id=21/35/8s4a.png)
 
 
