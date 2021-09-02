@@ -38,9 +38,10 @@ def install_paquets(liste):
 def restart_services(service1,service2):
 
     subprocess.run(['systemctl', 'restart', service1])
-    subprocess.run(['systemctl', 'status', service1])
+    print("le service", (service1), "a été redémarré")
     subprocess.run(['systemctl', 'restart', service2])
-    subprocess.run(['systemctl', 'status', service2])
+    print("le service", (service2), "a été redémarré")
+
 
 def create_database():
 
