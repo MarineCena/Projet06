@@ -31,6 +31,15 @@ Avant de lancer le programme sur votre machine il est impératif de télécharger l
 Le script doit être lancé depuis le terminal via la commande :
 * Python3 Installation_glpi.py
  Ou 
-* ./Installation_glpi.py 
+* ./Installation_glpi.py
+
+![exe1](https://zupimages.net/up/21/35/zh7x.png)
+![exe2](https://zupimages.net/up/21/35/8mxy.png)
 
 
+
+
+
+> CONNEXION AU SERVEUR
+
+Une fois que le script a été exécuté rendez-vous sur votre navigateur préféré. Tapez votre adresse IP suivie de « /GLPI ». Vous obtiendrez alors la page de connexion de GLPI comme ci-dessous.
