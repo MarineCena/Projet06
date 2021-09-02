@@ -24,9 +24,8 @@ Avant de lancer le programme sur votre machine il est impératif de télécharge
 
 > EXECUTION DU SCRIPT
 
-Le script doit être lancé depuis le terminal via la commande :
+Le script doit être lancé depuis le terminal via la commande au choix :
 * Python3 Installation_glpi.py
- Ou 
 * ./Installation_glpi.py
 
 ![exe1](https://zupimages.net/up/21/35/zh7x.png)
@@ -40,6 +39,7 @@ Le script doit être lancé depuis le terminal via la commande :
 
 Une fois que le script a été exécuté rendez-vous sur votre navigateur préféré. Tapez votre adresse IP suivie de « /GLPI ». Vous obtiendrez alors la page de connexion de GLPI comme ci-dessous.
 L’identifiant et le mot de passe par défaut sont respectivement : glpi ; glpi.
+
 ![co]( https://zupimages.net/up/21/35/s3i1.png) 
 
 
