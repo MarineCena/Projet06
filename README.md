@@ -1,7 +1,10 @@
-INSTALLATION ET CONFIGURATION AUTOMATIQUE DE GLPI
 
 ![Python 3](https://img.shields.io/badge/python-3.6%2B-green)
 ![Linux](https://img.shields.io/badge/Compatible-Linux-white)
+
+INSTALLATION ET CONFIGURATION AUTOMATIQUE DE GLPI
+
+
 
 
 
@@ -26,6 +29,8 @@ Avant de lancer le programme sur votre machine il est impératif de télécharger l
 > EXECUTION DU SCRIPT
 
 Le script doit être lancé depuis le terminal via la commande :
-Python3 Installation_glpi.py ou ./Installation_glpi.py 
+* Python3 Installation_glpi.py
+ Ou 
+* ./Installation_glpi.py 
 
 
