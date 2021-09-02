@@ -2,33 +2,32 @@
 ![Python 3](https://img.shields.io/badge/python-3.6%2B-green)
 ![Linux](https://img.shields.io/badge/Compatible-Linux-white)
 
+
 INSTALLATION ET CONFIGURATION AUTOMATIQUE DE GLPI
-
-
 
 
 
 
 > INTRODUCTION 
 
-Dans le cadre du projet 6 « Participez à la vie de la communauté OpenSource » de la formation « Administrateur Infrastructure & Cloud » d’OpenClassrooms, je dois développer un programme permettant d’automatiser une ou plusieurs tâches au choix. 
+Dans le cadre du projet 6 Â«Â Participez Ã  la vie de la communautÃ© OpenSourceÂ Â» de la formation Â«Â Administrateur Infrastructure & CloudÂ Â» dâ€™OpenClassrooms, je dois dÃ©velopper un programme permettant dâ€™automatiser une ou plusieurs tÃ¢ches au choix. 
 
-Il s’agit donc d’un programme en python qui permet d’installer et de configurer le logiciel GLPI afin d‘obtenir directement, lors de la connexion à l’URL « adresseIP/glpi », la page de connexion de GLPI (identifiant glpi ; mdp : glpi).
+Il sâ€™agit donc dâ€™un programme en python qui permet dâ€™installer et de configurer le logiciel GLPI afin dâ€˜obtenir directement, lors de la connexion Ã  lâ€™URL Â«Â adresseIP/glpiÂ Â», la page de connexion de GLPI (identifiant glpiÂ ; mdpÂ : glpi).
 
 
 
 > PRE-REQUIS 
 
-Avant de lancer le programme sur votre machine il est impératif de télécharger les paquets suivants :
-* « Python3-apt »
-* Le module python « mysql-connector-python »
-* Le module python « wget »
-*    « php-simplexml » peut être nécessaire sous Debian
+Avant de lancer le programme sur votre machine il est impÃ©ratif de tÃ©lÃ©charger les paquets suivantsÂ :
+* Â«Â Python3-aptÂ Â»
+* Le module python Â«Â mysql-connector-pythonÂ Â»
+* Le module python Â«Â wgetÂ Â»
+*    Â«Â php-simplexmlÂ Â» peut Ãªtre nÃ©cessaire sous Debian
 
 
 > EXECUTION DU SCRIPT
 
-Le script doit être lancé depuis le terminal via la commande :
+Le script doit Ãªtre lancÃ© depuis le terminal via la commande :
 * Python3 Installation_glpi.py
  Ou 
 * ./Installation_glpi.py
@@ -42,8 +41,8 @@ Le script doit être lancé depuis le terminal via la commande :
 
 > CONNEXION AU SERVEUR
 
-Une fois que le script a été exécuté rendez-vous sur votre navigateur préféré. Tapez votre adresse IP suivie de « /GLPI ». Vous obtiendrez alors la page de connexion de GLPI comme ci-dessous.
-L’identifiant et le mot de passe par défaut sont respectivement : glpi ; glpi
+Une fois que le script a Ã©tÃ© exÃ©cutÃ© rendez-vous sur votre navigateur prÃ©fÃ©rÃ©. Tapez votre adresse IP suivie de Â«Â /GLPI Â». Vous obtiendrez alors la page de connexion de GLPI comme ci-dessous.
+Lâ€™identifiant et le mot de passe par dÃ©faut sont respectivementÂ : glpiÂ ; glpi.
 ![co]( https://zupimages.net/up/21/35/s3i1.png) 
 
 
