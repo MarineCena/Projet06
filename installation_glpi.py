@@ -80,14 +80,11 @@ def create_user():
         mycursor.execute("CREATE USER 'glpiuser'@'localhost' IDENTIFIED BY ''")
         mycursor.execute("grant all privileges on *.* to 'glpiuser'@'localhost'")
 
-        mycursor.execute("select User from mysql.user")
-
     except mysql.connector.errors.ProgrammingError:
         print("Access denied")
 
     except mysql.connector.errors.DatabaseError:
         print("User exists")
-        mycursor.execute("DROP USER IF EXISTS 'glpiuser'@'localhost'")
 
     else:
          print("User created")
