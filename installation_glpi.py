@@ -44,45 +44,54 @@ def install_paquets(liste):
                 print(pack, "est maintenant installé")
 
 def restart_services(service1,service2):
-    try:
-        subprocess.run(['systemctl', 'restart', service1])
-    except:
-        print("ce service n'existe pas")
-    else:
-        print("le service", (service1), "a été redémarré")
+    subprocess.run(['systemctl', 'restart', service1])
+    print("le service", (service1), "a été redémarré")
     subprocess.run(['systemctl', 'restart', service2])
     print("le service", (service2), "a été redémarré")
 
 
 def create_database():
+    try:
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="19022012",
+            unix_socket="/var/run/mysqld/mysqld.sock"
+            )
+        mycursor = mydb.cursor()
+        mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdb")
 
-    mydb=mysql.connector.connect(
-        host="localhost",
-        user="root",
-        passwd="19022012",
-        unix_socket="/var/run/mysqld/mysqld.sock"
-    )
-    mycursor=mydb.cursor()
-    mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdb")
+    except mysql.connector.errors.ProgrammingError:
+        print("Access denied")
+
+    else:
+         print("connected, database created")
 
 def create_user():
+    try:
+        mydb=mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="19022012",
+            unix_socket="/var/run/mysqld/mysqld.sock"
+        )
+        mycursor=mydb.cursor()
+        mycursor.execute("DROP USER IF EXISTS 'glpiuser'@'localhost'")
+        mycursor.execute("CREATE USER 'glpiuser'@'localhost' IDENTIFIED BY ''")
+        mycursor.execute("grant all privileges on *.* to 'glpiuser'@'localhost'")
 
-    mydb=mysql.connector.connect(
-        host="localhost",
-        user="root",
-        passwd="19022012",
-        unix_socket="/var/run/mysqld/mysqld.sock"
-    )
-    mycursor=mydb.cursor()
-    mycursor.execute("DROP USER IF EXISTS 'glpiuser'@'localhost'")
-    mycursor.execute("CREATE USER 'glpiuser'@'localhost' IDENTIFIED BY ''")
-    mycursor.execute("grant all privileges on *.* to 'glpiuser'@'localhost'")
+        mycursor.execute("select User from mysql.user")
 
-    mycursor.execute(" select User from mysql.user")
+    except mysql.connector.errors.ProgrammingError:
+        print("Access denied")
 
-    for user in mycursor:
-        if user == ('glpiuser',):
-            print("l'utilisateur", (user), "a bien été crée")
+    except mysql.connector.errors.DatabaseError:
+        print("User exists")
+        mycursor.execute("DROP USER IF EXISTS 'glpiuser'@'localhost'")
+
+    else:
+         print("User created")
+
 
 def install_glpi(url,path):
 
@@ -128,16 +137,16 @@ def del_file(file):
 
 
 #install_maj(apt.Cache())
-install_paquets(liste_paquets)
-restart_services('apache2', 'mysql')
-create_database()
+#install_paquets(liste_paquets)
+#restart_services('apache2', 'mysql')
+#create_database()
 create_user()
-install_glpi('https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz',"/var/www/html/")
-chown()
-config_glpi()
-chown()
-del_file("/var/www/html/glpi/install/install.php")
-"""
+#install_glpi('https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz',"/var/www/html/")
+#chown()
+#config_glpi()
+#chown()
+#del_file("/var/www/html/glpi/install/install.php")
+
 
 
 
