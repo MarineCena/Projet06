@@ -35,7 +35,6 @@ def install_paquets(liste):
             pkg = cache[pack]
             if not pkg.is_installed:
                 pkg.mark_install()
-
             cache.commit()
         except apt.cache.FetchFailedException:
             print("Failed")
