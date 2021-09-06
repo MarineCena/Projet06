@@ -91,12 +91,17 @@ def create_user():
 
 
 def install_glpi(url,path):
-
-    filename = wget.download(url)
-
-    tar = tarfile.open(filename, "r:gz")
-    tar.extractall(path)
-    tar.close()
+    try:
+        filename = wget.download(url)
+        tar = tarfile.open(filename, "r:gz")
+        tar.extractall(path)
+        tar.close()
+    except tarfile.ExtractError:
+        print("erreur extraction")
+    except:
+        print("Temporary failure in name resolution")
+    else:
+        print("Download sucessfull!")
 
 def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True):
 
@@ -127,22 +132,29 @@ def config_glpi():
     subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-n', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
 
 def del_file(file):
-    if os.path.exists(file):
-        os.remove(file)
-    else:
-        print("Impossible de supprimer le fichier car il n'existe pas")
+    try:
+        if os.path.exists(file):
+            os.remove(file)
+        else:
+            print("Impossible de supprimer le fichier car il n'existe pas")
+
+    except PermissionError:
+        print("acces denied")
+    except OSError.filename:
+        print("file doesn't exist ")
 
 
-#install_maj(apt.Cache())
-#install_paquets(liste_paquets)
-#restart_services('apache2', 'mysql')
-#create_database()
+
+install_maj(apt.Cache())
+install_paquets(liste_paquets)
+restart_services('apache2', 'mysql')
+create_database()
 create_user()
-#install_glpi('https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz',"/var/www/html/")
-#chown()
-#config_glpi()
-#chown()
-#del_file("/var/www/html/glpi/install/install.php")
+install_glpi('https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz',"/var/www/html/")
+chown()
+config_glpi()
+chown()
+del_file("/var/www/html/glpi/install/install.php")
 
 
 
