@@ -7,12 +7,18 @@ import tarfile
 import shutil
 import os
 
+
 def install_maj(cache):
 
-    cache.update()
-    cache.open()
-    cache.upgrade(True)
-    cache.commit()
+    try:
+        cache.update()
+        cache.open()
+        cache.upgrade(True)
+        cache.commit()
+    except apt.cache.FetchFailedException:
+        print("Fetching fails!")
+    else:
+        print("Update Sucessfull!")
 
 
 liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl',
@@ -22,23 +28,29 @@ liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap',
 def install_paquets(liste):
 
     for pack in liste_paquets:
-        print("installation de", pack)
-        cache = apt.Cache()
-        cache.update()
-        pkg = cache[pack]
-        if not pkg.is_installed:
-            pkg.mark_install()
+        print("installation de", pack, "...")
+        try:
+            cache = apt.Cache()
+            cache.update()
+            pkg = cache[pack]
+            if not pkg.is_installed:
+                pkg.mark_install()
 
-        cache.commit()
-
-        cache.open()
-        if cache[pack].is_installed:
-            print(pack, "est maintenant installé")
+            cache.commit()
+        except apt.cache.FetchFailedException:
+            print("Failed")
+        else:
+            cache.open()
+            if cache[pack].is_installed:
+                print(pack, "est maintenant installé")
 
 def restart_services(service1,service2):
-
-    subprocess.run(['systemctl', 'restart', service1])
-    print("le service", (service1), "a été redémarré")
+    try:
+        subprocess.run(['systemctl', 'restart', service1])
+    except:
+        print("ce service n'existe pas")
+    else:
+        print("le service", (service1), "a été redémarré")
     subprocess.run(['systemctl', 'restart', service2])
     print("le service", (service2), "a été redémarré")
 
@@ -115,7 +127,8 @@ def del_file(file):
     else:
         print("Impossible de supprimer le fichier car il n'existe pas")
 
-install_maj(apt.Cache())
+
+#install_maj(apt.Cache())
 install_paquets(liste_paquets)
 restart_services('apache2', 'mysql')
 create_database()
@@ -125,7 +138,7 @@ chown()
 config_glpi()
 chown()
 del_file("/var/www/html/glpi/install/install.php")
-
+"""
 
 
 
