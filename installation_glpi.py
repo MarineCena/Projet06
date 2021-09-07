@@ -52,15 +52,14 @@ def restart_services(service1,service2):
 
 
 def create_database():
+    with open('configuration.yml') as f:
+        config = yaml.load(f)
+        conf = (config['CONFIG'])
+    mydb = mysql.connector.connect(**conf)
+
     try:
-        mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="19022012",
-            unix_socket="/var/run/mysqld/mysqld.sock"
-            )
         mycursor = mydb.cursor()
-        mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdb")
+        mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdatabase")
 
     except mysql.connector.errors.ProgrammingError:
         print("Access denied")
@@ -70,12 +69,11 @@ def create_database():
 
 def create_user():
     try:
-        mydb=mysql.connector.connect(
-            host="localhost",
-            user="root",
-            passwd="19022012",
-            unix_socket="/var/run/mysqld/mysqld.sock"
-        )
+        with open('configuration.yml') as f:
+            config = yaml.load(f)
+            conf = (config['CONFIG'])
+        mydb = mysql.connector.connect(**conf)
+
         mycursor=mydb.cursor()
         mycursor.execute("DROP USER IF EXISTS 'glpiuser'@'localhost'")
         mycursor.execute("CREATE USER 'glpiuser'@'localhost' IDENTIFIED BY ''")
@@ -152,8 +150,8 @@ def del_file(file):
 #install_maj(apt.Cache())
 #install_paquets(liste_paquets)
 #restart_services('apache2', 'mysql')
-#create_database()
-#create_user()
+create_database()
+create_user()
 with open('configuration.yml') as f:
     config = yaml.load(f)
     url = (config['URL'])
