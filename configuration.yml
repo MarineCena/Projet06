@@ -2,3 +2,12 @@ URL: https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz
 PATH: /var/www/html/
 
 
+
+CONFIG :
+    'user': 'root'
+    'password': '19022012'
+    'host': 'localhost'
+    'unix_socket' : '/var/run/mysqld/mysqld.sock'
+
+
+
