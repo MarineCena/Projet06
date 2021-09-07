@@ -6,6 +6,7 @@ import wget
 import tarfile
 import shutil
 import os
+import yaml
 
 
 def install_maj(cache):
@@ -90,7 +91,8 @@ def create_user():
          print("User created")
 
 
-def install_glpi(url,path):
+def install_glpi(url, path):
+
     try:
         filename = wget.download(url)
         tar = tarfile.open(filename, "r:gz")
@@ -102,6 +104,8 @@ def install_glpi(url,path):
         print("Temporary failure in name resolution")
     else:
         print("Download sucessfull!")
+
+
 
 def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True):
 
@@ -145,16 +149,20 @@ def del_file(file):
 
 
 
-install_maj(apt.Cache())
-install_paquets(liste_paquets)
-restart_services('apache2', 'mysql')
-create_database()
-create_user()
-install_glpi('https://github.com/glpi-project/glpi/releases/download/9.5.5/glpi-9.5.5.tgz',"/var/www/html/")
-chown()
-config_glpi()
-chown()
-del_file("/var/www/html/glpi/install/install.php")
+#install_maj(apt.Cache())
+#install_paquets(liste_paquets)
+#restart_services('apache2', 'mysql')
+#create_database()
+#create_user()
+with open('configuration.yml') as f:
+    config = yaml.load(f)
+    url = (config['URL'])
+    path = (config['PATH'])
+install_glpi(url, path)
+#chown()
+#config_glpi()
+#chown()
+#del_file("/var/www/html/glpi/install/install.php")
 
 
 
