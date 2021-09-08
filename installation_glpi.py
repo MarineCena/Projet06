@@ -8,6 +8,10 @@ import shutil
 import os
 import yaml
 
+def read_conf(file):
+  with open(file) as f:
+      return yaml.load(f)
+
 
 def install_maj(cache):
 
@@ -22,10 +26,7 @@ def install_maj(cache):
         print("Update Sucessfull!")
 
 
-def install_paquets(liste):
-    with open('configuration.yml') as f:
-        config = yaml.load(f)
-        liste_paquets = (config['LISTE'])
+def install_paquets(liste_paquets):
         print(liste_paquets)
 
         for pack in liste_paquets:
@@ -48,15 +49,12 @@ def restart_services(service):
     subprocess.run(['systemctl', 'restart', service])
     print("le service", (service), "a été redémarré")
 
-def create_database():
-    with open('configuration.yml') as f:
-        config = yaml.load(f)
-        conf = (config['CONFIG'])
+def create_database(conf):
     mydb = mysql.connector.connect(**conf)
 
     try:
         mycursor = mydb.cursor()
-        mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdatabase")
+        mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdb")
 
     except mysql.connector.errors.ProgrammingError:
         print("Access denied")
@@ -64,11 +62,8 @@ def create_database():
     else:
          print("connected, database created")
 
-def create_user():
+def create_user(conf):
     try:
-        with open('configuration.yml') as f:
-            config = yaml.load(f)
-            conf = (config['CONFIG'])
         mydb = mysql.connector.connect(**conf)
 
         mycursor=mydb.cursor()
@@ -141,24 +136,20 @@ def del_file(file):
     else:
         print("File deleted!")
 
-
+conf = read_conf('configuration.yml')
 #Installer les mises à jour
 install_maj(apt.Cache())
 #Installer les différents paquets
-install_paquets(liste_paquets)
+install_paquets(conf['LISTE'])
 #Redémarrer les services Apache2 et mysql
 restart_services('apache2')
 restart_services('mysql')
 #Création de la base de données
-create_database()
+create_database(conf['CONFIG'])
 #Création de l'utilisateur
-create_user()
+create_user(conf['CONFIG'])
 #Installation GLPI avec la config yaml
-with open('configuration.yml') as f:
-    config = yaml.load(f)
-    url = (config['URL'])
-    path = (config['PATH'])
-install_glpi(url, path)
+install_glpi(conf['URL'], conf['PATH'])
 #Attribution des droits d'accès
 chown()
 #Configuration de GLPI
