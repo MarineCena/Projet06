@@ -22,34 +22,31 @@ def install_maj(cache):
         print("Update Sucessfull!")
 
 
-liste_paquets = ['apache2', 'php', 'libapache2-mod-php', 'php-imap', 'php-ldap', 'php-curl',
-                 'php-xmlrpc', 'php-gd', 'php-mysql', 'php-cas', 'mariadb-server', 'apcupsd',
-               'php-apcu', 'php-intl', 'php-mbstring']
-
 def install_paquets(liste):
+    with open('configuration.yml') as f:
+        config = yaml.load(f)
+        liste_paquets = (config['LISTE'])
+        print(liste_paquets)
 
-    for pack in liste_paquets:
-        print("installation de", pack, "...")
-        try:
-            cache = apt.Cache()
-            cache.update()
-            pkg = cache[pack]
-            if not pkg.is_installed:
-                pkg.mark_install()
-            cache.commit()
-        except apt.cache.FetchFailedException:
-            print("Failed")
-        else:
-            cache.open()
-            if cache[pack].is_installed:
-                print(pack, "est maintenant installé")
+        for pack in liste_paquets:
+            print("installation de", pack, "...")
+            try:
+                cache = apt.Cache()
+                cache.update()
+                pkg = cache[pack]
+                if not pkg.is_installed:
+                    pkg.mark_install()
+                cache.commit()
+            except apt.cache.FetchFailedException:
+                print("Failed")
+            else:
+                cache.open()
+                if cache[pack].is_installed:
+                    print(pack, "est maintenant installé")
 
-def restart_services(service1,service2):
-    subprocess.run(['systemctl', 'restart', service1])
-    print("le service", (service1), "a été redémarré")
-    subprocess.run(['systemctl', 'restart', service2])
-    print("le service", (service2), "a été redémarré")
-
+def restart_services(service):
+    subprocess.run(['systemctl', 'restart', service])
+    print("le service", (service), "a été redémarré")
 
 def create_database():
     with open('configuration.yml') as f:
@@ -135,32 +132,41 @@ def config_glpi():
 
 def del_file(file):
     try:
-        if os.path.exists(file):
-            os.remove(file)
-        else:
-            print("Impossible de supprimer le fichier car il n'existe pas")
+        os.remove(file)
 
     except PermissionError:
-        print("acces denied")
+        print("access denied")
     except OSError.filename:
-        print("file doesn't exist ")
+        print("file doesn't exist!")
+    else:
+        print("File deleted!")
 
 
-
-#install_maj(apt.Cache())
-#install_paquets(liste_paquets)
-#restart_services('apache2', 'mysql')
+#Installer les mises à jour
+install_maj(apt.Cache())
+#Installer les différents paquets
+install_paquets(liste_paquets)
+#Redémarrer les services Apache2 et mysql
+restart_services('apache2')
+restart_services('mysql')
+#Création de la base de données
 create_database()
+#Création de l'utilisateur
 create_user()
+#Installation GLPI avec la config yaml
 with open('configuration.yml') as f:
     config = yaml.load(f)
     url = (config['URL'])
     path = (config['PATH'])
 install_glpi(url, path)
-#chown()
-#config_glpi()
-#chown()
-#del_file("/var/www/html/glpi/install/install.php")
+#Attribution des droits d'accès
+chown()
+#Configuration de GLPI
+config_glpi()
+#Attribution des droits d'accès
+chown()
+#Suppression du fichier "install.php"
+del_file("/var/www/html/glpi/install/install.php")
 
 
 
