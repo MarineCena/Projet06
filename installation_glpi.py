@@ -131,7 +131,7 @@ def del_file(file):
 
     except PermissionError:
         print("access denied")
-    except OSError.filename:
+    except OSError:
         print("file doesn't exist!")
     else:
         print("File deleted!")
@@ -157,7 +157,7 @@ config_glpi()
 #Attribution des droits d'accès
 chown()
 #Suppression du fichier "install.php"
-del_file("/var/www/html/glpi/install/install.php")
+del_file(conf['FILEPATH'])
 
 
 
