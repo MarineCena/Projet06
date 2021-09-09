@@ -96,7 +96,7 @@ def glpi_download(url, path):
     print("GLPI is downloaded.")
 
 
-def access_rights(path="/var/www/html/glpi", user='www-data', group=None, recursive=True):
+def access_rights(path, user, group, recursive):
   """
   Change user/group ownership of file
   :param path: path of file or directory
@@ -155,10 +155,10 @@ create_user(conf['CONFIG'], conf['USER'])
 # GLPI's installation
 glpi_download(conf['URL'], conf['PATH'])
 # Access righgts' assignements
-access_rights()
+access_rights(conf['PATH'], conf['CHOWN_USER'], None, True)
 # GLPI's configuration
 glpi_install()
 # Access righgts' assignements
-access_rights()
+access_rights(conf['PATH'], conf['CHOWN_USER'], None, True)
 # "install.php": file's deletion
 del_file(conf['FILEPATH'])
