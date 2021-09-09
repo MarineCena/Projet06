@@ -14,7 +14,6 @@ def read_conf(file):
 
 
 def install_maj(cache):
-
     try:
         cache.update()
         cache.open()
@@ -27,38 +26,39 @@ def install_maj(cache):
 
 
 def install_paquets(liste_paquets):
-        print(liste_paquets)
-
-        for pack in liste_paquets:
-            print("installation de", pack, "...")
-            try:
-                cache = apt.Cache()
-                cache.update()
-                pkg = cache[pack]
-                if not pkg.is_installed:
-                    pkg.mark_install()
+    for pack in liste_paquets:
+        print("installation de", pack, "...")
+        try:
+            cache = apt.Cache()
+            cache.update()
+            pkg = cache[pack]
+            if not pkg.is_installed:
+                pkg.mark_install()
                 cache.commit()
-            except apt.cache.FetchFailedException:
-                print("Failed")
-            else:
-                cache.open()
-                if cache[pack].is_installed:
-                    print(pack, "est maintenant installé")
+        except apt.cache.FetchFailedException:
+            print("Failed")
+        else:
+            cache.open()
+            if cache[pack].is_installed:
+                print(pack, "est maintenant installé")
 
 def restart_services(service):
-    subprocess.run(['systemctl', 'restart', service])
-    print("le service", (service), "a été redémarré")
+    try:
+        subprocess.run(['systemctl', 'restart', service])
+    except FileNotFoundError:
+        print("No such file or directory")
+    except subprocess.CalledProcessError as e:
+        print(e.output)
+    else:
+        print((service), "restarted")
 
 def create_database(conf):
     mydb = mysql.connector.connect(**conf)
-
     try:
         mycursor = mydb.cursor()
         mycursor.execute("CREATE DATABASE IF NOT EXISTS GLPIdb")
-
     except mysql.connector.errors.ProgrammingError:
         print("Access denied")
-
     else:
          print("connected, database created")
 
@@ -70,19 +70,15 @@ def create_user(conf):
         mycursor.execute("DROP USER IF EXISTS 'glpiuser'@'localhost'")
         mycursor.execute("CREATE USER 'glpiuser'@'localhost' IDENTIFIED BY ''")
         mycursor.execute("grant all privileges on *.* to 'glpiuser'@'localhost'")
-
     except mysql.connector.errors.ProgrammingError:
         print("Access denied")
-
     except mysql.connector.errors.DatabaseError:
         print("User exists")
-
     else:
          print("User created")
 
 
 def install_glpi(url, path):
-
     try:
         filename = wget.download(url)
         tar = tarfile.open(filename, "r:gz")
@@ -101,7 +97,6 @@ def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True
 
     """
         Change user/group ownership of file
-
         :param path: path of file or directory
         :param str user: new owner username
         :param str group: new owner group name
@@ -122,19 +117,20 @@ def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True
         raise UtilsException(e)
 
 def config_glpi():
-
-    subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-n', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
+    try:
+        subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-n', '-r', '-f', '-L', 'french', '-d', 'GLPIdb', '-u', 'glpiuser'])
+    except subprocess.SubprocessError as e:
+        print(e.output)
 
 def del_file(file):
     try:
         os.remove(file)
-
     except PermissionError:
         print("access denied")
     except OSError:
         print("file doesn't exist!")
     else:
-        print("File deleted!")
+        print("File", (conf['FILEPATH']), "deleted!")
 
 conf = read_conf('configuration.yml')
 #Installer les mises à jour
@@ -148,7 +144,7 @@ restart_services('mysql')
 create_database(conf['CONFIG'])
 #Création de l'utilisateur
 create_user(conf['CONFIG'])
-#Installation GLPI avec la config yaml
+#Installation de GLPI
 install_glpi(conf['URL'], conf['PATH'])
 #Attribution des droits d'accès
 chown()
