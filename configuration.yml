@@ -29,9 +29,6 @@ PATH: /var/www/html/
 
 FILEPATH: /var/www/html/glpi/install/install.php
 
+DATABASE: GLPIdb
 
-
-
-
-
-
+USER: GLPIuser
