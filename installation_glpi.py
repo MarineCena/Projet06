@@ -147,9 +147,9 @@ install_paquets(conf['LISTE'])
 restart_services('apache2')
 restart_services('mysql')
 # Création de la base de données
-create_database(conf['CONFIG'])
+create_database(conf['CONFIG'], conf['DATABASE'])
 # Création de l'utilisateur
-create_user(conf['CONFIG'])
+create_user(conf['CONFIG'], conf['USER'])
 # Installation de GLPI
 install_glpi(conf['URL'], conf['PATH'])
 # Attribution des droits d'accès
