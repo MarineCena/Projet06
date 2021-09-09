@@ -14,21 +14,21 @@ def read_conf(file):
     return yaml.load(f)
 
 
-def install_maj(cache):
+def update(cache):
   try:
     cache.update()
     cache.open()
     cache.upgrade(True)
     cache.commit()
   except apt.cache.FetchFailedException:
-    print("Fetching fails!")
+    print("Failed, connexion error!")
   else:
-    print("Update Sucessfull!")
+    print("Update Sucessfull.")
 
 
-def install_paquets(liste_paquets):
+def packs_install(liste_paquets):
   for pack in liste_paquets:
-    print("installation de", pack, "...")
+    print(pack, "is installing ...")
     try:
       cache = apt.Cache()
       cache.update()
@@ -37,22 +37,22 @@ def install_paquets(liste_paquets):
         pkg.mark_install()
         cache.commit()
     except apt.cache.FetchFailedException:
-      print("Failed")
+      print("Failed, connexion error!")
     else:
       cache.open()
       if cache[pack].is_installed:
-        print(pack, "est maintenant installé")
+        print(pack, "is now installed.")
 
 
-def restart_services(service):
+def reboot_services(service):
   try:
     subprocess.run(['systemctl', 'restart', service])
   except FileNotFoundError:
-    print("No such file or directory")
+    print("No such file or directory!")
   except subprocess.CalledProcessError as e:
     print(e.output)
   else:
-    print(service, "restarted")
+    print(service, "service restarted.")
 
 
 def create_database(conf, db):
@@ -61,9 +61,9 @@ def create_database(conf, db):
     mycursor = mydb.cursor()
     mycursor.execute("CREATE DATABASE IF NOT EXISTS " + db)
   except mysql.connector.errors.ProgrammingError:
-    print("Access denied")
+    print("Access denied!")
   else:
-    print("connected, database created")
+    print("Connected, database created.")
 
 
 def create_user(conf,user):
@@ -75,28 +75,28 @@ def create_user(conf,user):
     mycursor.execute("CREATE USER " + user + "@localhost IDENTIFIED BY ''")
     mycursor.execute("grant all privileges on *.* to " + user + "@localhost")
   except mysql.connector.errors.ProgrammingError:
-    print("Access denied")
+    print("Access denied!")
   except mysql.connector.errors.DatabaseError:
-    print("User exists")
+    print("User still exists!")
   else:
-    print("User created")
+    print("User created.")
 
 
-def install_glpi(url, path):
+def glpi_download(url, path):
   try:
     filename = wget.download(url)
     tar = tarfile.open(filename, "r:gz")
     tar.extractall(path)
     tar.close()
   except tarfile.ExtractError:
-    print("erreur extraction")
+    print("Extraction error!")
   except:
-    print("Temporary failure in name resolution")
+    print("Failed, connexion error!")
   else:
-    print("Download sucessfull!")
+    print("GLPI is downloaded.")
 
 
-def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True):
+def access_rights(path="/var/www/html/glpi", user='www-data', group=None, recursive=True):
   """
   Change user/group ownership of file
   :param path: path of file or directory
@@ -119,12 +119,14 @@ def chown(path="/var/www/html/glpi", user='www-data', group=None, recursive=True
     raise UtilsException(e)
 
 
-def config_glpi():
+def glpi_install():
   try:
     subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-n', '-r', '-f', '-L', 'french',
-                    '-d', 'GLPIdb','-u', 'glpiuser'])
+                    '-d', 'GLPIdb', '-u', 'glpiuser'])
   except subprocess.SubprocessError as e:
     print(e.output)
+  else:
+    print("GLPI is now installed.")
 
 
 def del_file(file):
@@ -137,26 +139,26 @@ def del_file(file):
   else:
     print("File", (conf['FILEPATH']), "deleted!")
 
-
+#Conf file reading
 conf = read_conf('configuration.yml')
-# Installer les mises à jour
-install_maj(apt.Cache())
-# Installer les différents paquets
-install_paquets(conf['LISTE'])
-# Redémarrer les services Apache2 et mysql
-restart_services('apache2')
-restart_services('mysql')
-# Création de la base de données
+# Cache Update
+update(apt.Cache())
+# Packages' installation
+packs_install(conf['LISTE'])
+# Rebooting Apache2 and mysql services
+reboot_services('apache2')
+reboot_services('mysql')
+# Database's creation
 create_database(conf['CONFIG'], conf['DATABASE'])
-# Création de l'utilisateur
+# User's creation
 create_user(conf['CONFIG'], conf['USER'])
-# Installation de GLPI
-install_glpi(conf['URL'], conf['PATH'])
-# Attribution des droits d'accès
-chown()
-# Configuration de GLPI
-config_glpi()
-# Attribution des droits d'accès
-chown()
-# Suppression du fichier "install.php"
+# GLPI's installation
+glpi_download(conf['URL'], conf['PATH'])
+# Access righgts' assignements
+access_rights()
+# GLPI's configuration
+glpi_install()
+# Access righgts' assignements
+access_rights()
+# "install.php": file's deletion
 del_file(conf['FILEPATH'])
