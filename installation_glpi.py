@@ -8,6 +8,7 @@ import tarfile
 import shutil
 import os
 import yaml
+import sys
 
 
 def read_conf(file):
