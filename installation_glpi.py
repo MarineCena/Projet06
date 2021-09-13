@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# Modules' importing
 import apt
 import subprocess
 import mysql.connector
