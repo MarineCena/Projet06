@@ -9,7 +9,7 @@
 
 Dans le cadre du projet 6 « Participez à la vie de la communauté OpenSource » de la formation « Administrateur Infrastructure & Cloud » d’OpenClassrooms, je dois développer un programme permettant d’automatiser une ou plusieurs tâches au choix. 
 
-Il s’agit donc d’un programme en python qui permet d’installer et de configurer le logiciel GLPI afin d‘obtenir directement, lors de la connexion à l’URL « adresseIP/glpi », la page de connexion de GLPI (identifiant glpi ; mdp : glpi).
+Il s’agit donc d’un programme en python qui permet d’installer et de configurer le logiciel GLPI afin d‘obtenir directement, lors de la connexion, la page de connexion de GLPI.
 
 
 
