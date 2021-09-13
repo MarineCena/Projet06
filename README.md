@@ -24,9 +24,10 @@ Avant de lancer le programme sur votre machine il est impératif de télécharge
 
 > EXECUTION DU SCRIPT
 
-Le script doit être lancé depuis le terminal via la commande au choix :
-* Python3 Installation_glpi.py
-* ./Installation_glpi.py
+Le script est lancé depuis le terminal via la commande au choix :
+
+`python3 installation_glpi.py configuration.yml`
+
 
 ![exe1](https://zupimages.net/up/21/35/zh7x.png)
 ![exe2](https://zupimages.net/up/21/35/8mxy.png)
