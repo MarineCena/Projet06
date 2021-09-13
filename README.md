@@ -37,7 +37,7 @@ Le script doit être lancé depuis le terminal via la commande au choix :
 
 > CONNEXION AU SERVEUR
 
-Une fois que le script a été exécuté rendez-vous sur votre navigateur préféré. Tapez votre adresse IP suivie de « /GLPI ». Vous obtiendrez alors la page de connexion de GLPI comme ci-dessous.
+Une fois que le script a été exécuté rendez-vous sur votre navigateur préféré. Si vous l'avez lancé avec le fichier de configuration original, il vous suffit d'entrer votre adresse IP suivie de « /GLPI ». Vous obtiendrez alors la page de connexion de GLPI comme ci-dessous
 L’identifiant et le mot de passe par défaut sont respectivement : glpi ; glpi.
 
 ![co]( https://zupimages.net/up/21/35/s3i1.png) 
