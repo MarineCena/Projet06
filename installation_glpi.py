@@ -10,12 +10,12 @@ import os
 import yaml
 import sys
 
-
+#Conf file loading and reading function
 def read_conf(file):
   with open(file) as f:
     return yaml.load(f)
 
-
+# Cache updating function
 def update(cache):
   try:
     cache.update()
@@ -27,7 +27,7 @@ def update(cache):
   else:
     print("Update Sucessfull.")
 
-
+# Packages' installation function
 def packs_install(liste_paquets):
   for pack in liste_paquets:
     print(pack, "is installing ...")
@@ -45,7 +45,7 @@ def packs_install(liste_paquets):
       if cache[pack].is_installed:
         print(pack, "is now installed.")
 
-
+# Rebooting Apache2 and mysql services function
 def reboot_services(service):
   try:
     subprocess.run(['systemctl', 'restart', service])
@@ -56,7 +56,7 @@ def reboot_services(service):
   else:
     print(service, "service restarted.")
 
-
+# Database's creation function
 def create_database(conf, db):
   mydb = mysql.connector.connect(**conf)
   try:
@@ -67,7 +67,7 @@ def create_database(conf, db):
   else:
     print("Connected, database created.")
 
-
+# User's creation function
 def create_user(conf,user):
   try:
     mydb = mysql.connector.connect(**conf)
@@ -83,7 +83,7 @@ def create_user(conf,user):
   else:
     print("User created.")
 
-
+# GLPI's downloading and installation function
 def glpi_download(url, path):
   try:
     filename = wget.download(url)
@@ -97,7 +97,7 @@ def glpi_download(url, path):
   else:
     print("GLPI is downloaded.")
 
-
+# Access rights' assignments function
 def access_rights(path, user, group, recursive):
   """
   Change user/group ownership of file
@@ -120,7 +120,7 @@ def access_rights(path, user, group, recursive):
   except OSError as e:
     raise UtilsException(e)
 
-
+# GLPI's configuration function
 def glpi_install():
   try:
     subprocess.run(['php', '/var/www/html/glpi/bin/console', 'db:install', '-n', '-r', '-f', '-L', 'french',
@@ -130,7 +130,7 @@ def glpi_install():
   else:
     print("GLPI is now installed.")
 
-
+# file's deletion function
 def del_file(file):
   try:
     os.remove(file)
@@ -156,11 +156,11 @@ create_database(conf['CONFIG'], conf['DATABASE'])
 create_user(conf['CONFIG'], conf['USER'])
 # GLPI's installation
 glpi_download(conf['URL'], conf['PATH'])
-# Access righgts' assignements
+# Access rights' assignements
 access_rights(conf['PATH'], conf['CHOWN_USER'], None, True)
 # GLPI's configuration
 glpi_install()
-# Access righgts' assignements
+# Access rights' assignments
 access_rights(conf['PATH'], conf['CHOWN_USER'], None, True)
 # "install.php": file's deletion
 del_file(conf['FILEPATH'])
