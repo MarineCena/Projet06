@@ -29,8 +29,8 @@ Le script est lancé depuis le terminal via la commande:
 `python3 installation_glpi.py configuration.yml`
 
 
-![exe1](https://zupimages.net/up/21/35/zh7x.png)
-![exe2](https://zupimages.net/up/21/35/8mxy.png)
+![exe1](https://zupimages.net/up/21/37/ul94.png)
+![exe2](https://zupimages.net/up/21/37/xmbc.png)
 
 
 
