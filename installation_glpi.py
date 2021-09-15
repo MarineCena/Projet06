@@ -142,8 +142,10 @@ def del_file(file):
     print("File", (conf['FILEPATH']), "deleted!")
 
 #Conf file reading
-print(sys.argv[1])
-conf = read_conf(sys.argv[1])
+try:
+  conf = read_conf(sys.argv[1])
+except IndexError:
+    print('Error Missing argument!')
 # Cache Update
 update(apt.Cache())
 # Packages' installation
