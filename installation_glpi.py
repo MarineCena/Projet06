@@ -142,7 +142,8 @@ def del_file(file):
     print("File", (conf['FILEPATH']), "deleted!")
 
 #Conf file reading
-conf = read_conf('configuration.yml')
+print(sys.argv[1])
+conf = read_conf(sys.argv[1])
 # Cache Update
 update(apt.Cache())
 # Packages' installation
