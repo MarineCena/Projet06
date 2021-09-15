@@ -24,7 +24,7 @@ Avant de lancer le programme sur votre machine il est impératif de télécharge
 
 > EXECUTION DU SCRIPT
 
-Le script est lancé depuis le terminal via la commande au choix :
+Le script est lancé depuis le terminal via la commande:
 
 `python3 installation_glpi.py configuration.yml`
 
